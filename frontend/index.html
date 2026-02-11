@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt to ESP32</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">
+                    <h1>Prompt to Action</h1>
+                    <p>Generate and upload ESP32 code. Speak in English or Tamil.</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="textarea-container">
+                    <textarea 
+                        id="promptInput" 
+                        placeholder="Type your command here... (e.g., 'Turn on red LED for 2 seconds')"
+                        rows="4"
+                    ></textarea>
+                </div>
+                
+                <!-- Controls Row -->
+                <div class="controls-row">
+                    <div class="left-controls">
+                        <button id="micButton" class="mic-button" title="Press 'M' or click to record">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                        
+                        <select id="languageSelect" class="language-select">
+                            <!-- <option value="auto">Auto</option> -->
+                            <option value="en-IN">English</option>
+                            <option value="ta-IN">Tamil</option>
+                        </select>
+                    </div>
+                    
+                    <div class="right-controls">
+                        <label class="toggle-container">
+                            <input type="checkbox" id="autoGenerate" checked>
+                            <span class="toggle-text">Auto-generate after speech</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="generateButton" class="btn btn-primary">
+                    <span class="btn-text">Generate Code</span>
+                    <div class="spinner hidden"></div>
+                </button>
+                <button id="uploadUSBButton" class="btn btn-success">Upload (USB)</button>
+                <button id="uploadOTAButton" class="btn btn-warning">Upload (OTA)</button>
+            </div>
+
+            <!-- Code Output -->
+            <div class="code-section">
+                <div class="code-header">
+                    <h3>Generated Arduino Code</h3>
+                    <button id="copyButton" class="copy-button" title="Copy to clipboard">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="code-container">
+                    <pre id="codeOutput"><code>// Generated Arduino code will appear here...</code></pre>
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div id="statusBar" class="status-bar hidden">
+                <div class="status-content">
+                    <div class="status-icon"></div>
+                    <span class="status-text"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 TEAM ENGINUITY</p>
+        </footer>
+    </div>
+
+    <!-- Speech Modal -->
+    <div id="speechModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Recording</h2>
+                <div class="language-indicator">
+                    <span id="currentLanguage">Tamil</span>
+                </div>
+            </div>
+            
+            <div class="audio-meter-container">
+                <div class="audio-meter">
+                    <div id="audioMeterBar" class="audio-meter-bar"></div>
+                </div>
+            </div>
+            
+            <div class="transcript-section">
+                <div class="interim-text">
+                    <label>Listening...</label>
+                    <div id="interimText" class="interim-display"></div>
+                </div>
+                
+                <div class="final-text">
+                    <label>Final Transcript</label>
+                    <div id="finalText" class="final-display"></div>
+                </div>
+            </div>
+            
+            <div class="confidence-display">
+                <span id="confidenceText">Confidence: --</span>
+            </div>
+            
+            <div class="modal-actions">
+                <button id="stopRecording" class="btn btn-danger">Stop Recording</button>
+                <button id="cancelRecording" class="btn btn-secondary">Cancel</button>
+                <button id="sendToPrompt" class="btn btn-primary hidden">Send to Prompt</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
